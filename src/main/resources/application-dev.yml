@@ -6,7 +6,7 @@ spring:
       - application-security.yml
 
   datasource:
-    url: jdbc:mysql://localhost:3307/babzipdb
+    url: jdbc:mysql://localhost:3307/babzipdb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: babzip
     password: "babzippass"
     driver-class-name: com.mysql.cj.jdbc.Driver

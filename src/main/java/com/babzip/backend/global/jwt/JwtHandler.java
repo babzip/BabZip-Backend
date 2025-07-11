@@ -1,25 +1,17 @@
 package com.babzip.backend.global.jwt;
 
-import com.babzip.backend.global.token.entity.RefreshToken;
-import com.babzip.backend.global.token.entity.Token;
-import com.babzip.backend.global.token.repository.RefreshTokenRepository;
+import com.babzip.backend.token.entity.RefreshToken;
+import com.babzip.backend.token.entity.Token;
+import com.babzip.backend.token.repository.RefreshTokenRepository;
 import com.babzip.backend.user.domain.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class JwtHandler {
 
@@ -50,8 +42,8 @@ public class JwtHandler {
                 .compact();
 
         String refreshToken = UUID.randomUUID().toString();
-
-        RefreshToken refreshTokenEntity = new RefreshToken(jwtUserClaim.userId(), refreshToken);
+        long refreshTokenExpireIn = jwtProperties.getRefreshTokenExpireIn();
+        RefreshToken refreshTokenEntity = new RefreshToken(jwtUserClaim.userId(), refreshToken, refreshTokenExpireIn);
         refreshTokenRepository.save(refreshTokenEntity);
 
         return Token.builder()
