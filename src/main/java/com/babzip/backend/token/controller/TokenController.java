@@ -1,14 +1,13 @@
-package com.babzip.backend.global.token.controller;
+package com.babzip.backend.token.controller;
 
 import com.babzip.backend.global.response.ResponseBody;
-import com.babzip.backend.global.token.dto.request.TokenRequest;
-import com.babzip.backend.global.token.dto.response.TokenResponse;
-import com.babzip.backend.global.token.entity.Token;
-import com.babzip.backend.global.token.service.TokenService;
+import com.babzip.backend.token.dto.request.TokenRequest;
+import com.babzip.backend.token.dto.response.TokenResponse;
+import com.babzip.backend.token.entity.Token;
+import com.babzip.backend.token.service.TokenService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

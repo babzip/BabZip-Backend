@@ -1,7 +1,6 @@
 package com.babzip.backend.global.jwt;
 
 import com.babzip.backend.global.jwt.exception.JwtAccessDeniedException;
-import com.babzip.backend.global.jwt.exception.JwtAuthentication;
 import com.babzip.backend.global.jwt.exception.JwtTokenExpiredException;
 import com.babzip.backend.global.jwt.exception.JwtTokenInvalidException;
 import com.babzip.backend.user.domain.UserRole;

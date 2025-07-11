@@ -1,4 +1,4 @@
-package com.babzip.backend.global.token.dto.request;
+package com.babzip.backend.token.dto.request;
 
 public record TokenRequest (
     String accessToken,

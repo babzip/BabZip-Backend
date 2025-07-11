@@ -1,4 +1,4 @@
-package com.babzip.backend.global.token.entity;
+package com.babzip.backend.token.entity;
 
 import lombok.Builder;
 import lombok.Getter;
