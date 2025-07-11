@@ -1,4 +1,4 @@
-package com.babzip.backend.global.token.entity;
+package com.babzip.backend.token.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +7,9 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 @NoArgsConstructor
@@ -22,9 +25,13 @@ public class RefreshToken {
 
     private String refreshToken;
 
+    private LocalDateTime expiredAt;
+
     @Builder
-    public RefreshToken(Long userId, String refreshToken) {
+    public RefreshToken(Long userId, String refreshToken, Long times) {
         this.userId = userId;
         this.refreshToken = refreshToken;
+        this.expiredAt = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
+                .plusSeconds(times);
     }
 }
