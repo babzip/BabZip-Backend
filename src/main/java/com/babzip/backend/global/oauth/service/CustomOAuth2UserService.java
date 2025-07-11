@@ -4,7 +4,7 @@ import com.babzip.backend.global.oauth.user.OAuth2Provider;
 import com.babzip.backend.global.oauth.user.OAuth2UserInfo;
 import com.babzip.backend.user.domain.User;
 import com.babzip.backend.user.domain.UserRole;
-import com.babzip.backend.user.repository.MemberRepository;
+import com.babzip.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     @Override
@@ -76,7 +76,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             provider = null;
         }
 
-        User user = memberRepository.findByEmail(oAuth2UserInfo.email())
+        User user = userRepository.findByEmail(oAuth2UserInfo.email())
                 .orElseGet(() ->
                         User.builder()
                                 .email(oAuth2UserInfo.email())
@@ -85,7 +85,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                                 .providerId(providerId)
                                 .build()
                 );
-        return memberRepository.save(user);
+        return userRepository.save(user);
     }
 
 }
