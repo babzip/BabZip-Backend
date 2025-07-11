@@ -14,10 +14,29 @@ spring:
               scope: # google API의 범위 값
                 - profile
                 - email
+          kakao:
+              client-id: 8f17ac3d01994250b691c46ef491b316
+              client-secret: ${KAKAO_SECRET}
+              client-name: Kakao
+              authorization-grant-type: authorization_code
+              client-authentication-method: client_secret_post
+              redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+              scope:
+                - account_email
+                - profile_nickname
+                - profile_image
+
         provider:
           google:
             authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
             user-name-attribute: sub
+
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
 

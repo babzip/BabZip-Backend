@@ -7,9 +7,10 @@ import lombok.Builder;
 import java.util.Map;
 import com.babzip.backend.global.exception.ExceptionType;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import static com.babzip.backend.user.domain.UserRole.USER;
-
+@Slf4j
 @Builder
 public record OAuth2UserInfo(
         String name,
@@ -26,6 +27,10 @@ public record OAuth2UserInfo(
     }
 
     private static OAuth2UserInfo ofGoogle(Map<String, Object> attributes) {
+        log.info("Google User Info: {}", attributes.get("name"));
+        log.info("Google User Info: {}", attributes.get("email"));
+        log.info("Google User Info: {}", attributes.get("picture"));
+
         return OAuth2UserInfo.builder()
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
@@ -35,13 +40,18 @@ public record OAuth2UserInfo(
 
     // TODO : 구글 도입 후에 카카오 도입
     private static OAuth2UserInfo ofKakao(Map<String, Object> attributes) {
+        log.info("Kakao User Info: {}", attributes.get("kakao_account"));
         Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
-        Map<String, Object> profile = (Map<String, Object>) account.get("profile");
+
+
+        log.info("Kakao User Info: {}", account.get("nickname"));
+        log.info("Kakao User Info: {}", account.get("email"));
+        log.info("Kakao User Info: {}", account.get("profile_image_url"));
 
         return OAuth2UserInfo.builder()
-                .name((String) profile.get("nickname"))
+                .name((String) account.get("nickname"))
                 .email((String) account.get("email"))
-                .profile((String) profile.get("profile_image_url"))
+                .profile((String) account.get("profile_image_url"))
                 .build();
     }
 
