@@ -1,4 +1,4 @@
-package com.babzip.backend.global.token.dto.response;
+package com.babzip.backend.token.dto.response;
 
 public record TokenResponse(
         String accessToken,

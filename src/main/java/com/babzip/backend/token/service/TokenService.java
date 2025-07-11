@@ -1,15 +1,14 @@
-package com.babzip.backend.global.token.service;
+package com.babzip.backend.token.service;
 
 import com.babzip.backend.global.exception.BusinessException;
 import com.babzip.backend.global.exception.ExceptionType;
 import com.babzip.backend.global.jwt.JwtHandler;
 import com.babzip.backend.global.jwt.JwtUserClaim;
-import com.babzip.backend.global.token.dto.response.TokenResponse;
-import com.babzip.backend.global.token.entity.RefreshToken;
-import com.babzip.backend.global.token.entity.Token;
-import com.babzip.backend.global.token.repository.RefreshTokenRepository;
+import com.babzip.backend.token.dto.response.TokenResponse;
+import com.babzip.backend.token.entity.RefreshToken;
+import com.babzip.backend.token.entity.Token;
+import com.babzip.backend.token.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +30,7 @@ public class TokenService {
         if(!token.getRefreshToken().equals(savedRefreshToken.getRefreshToken())) // userId 비교
             throw new BusinessException(ExceptionType.TOKEN_NOT_MATCHED);
 
-        refreshTokenRepository.deleteByuserId(savedRefreshToken.getUserId());
+        refreshTokenRepository.deleteByUserId(savedRefreshToken.getUserId());
 
         Token tokenResponse = jwtHandler.createTokens(jwtUserClaim);
         return new TokenResponse(tokenResponse.getAccessToken(), tokenResponse.getRefreshToken());
