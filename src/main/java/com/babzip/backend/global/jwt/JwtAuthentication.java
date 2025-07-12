@@ -1,16 +1,12 @@
-package com.babzip.backend.global.jwt.exception;
+package com.babzip.backend.global.jwt;
 
-import com.babzip.backend.global.jwt.JwtUserClaim;
 import com.babzip.backend.user.domain.UserRole;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 public record JwtAuthentication(
         Long userId,

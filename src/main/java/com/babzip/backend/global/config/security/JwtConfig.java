@@ -2,7 +2,7 @@ package com.babzip.backend.global.config.security;
 
 import com.babzip.backend.global.jwt.JwtHandler;
 import com.babzip.backend.global.jwt.JwtProperties;
-import com.babzip.backend.global.token.repository.RefreshTokenRepository;
+import com.babzip.backend.token.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
