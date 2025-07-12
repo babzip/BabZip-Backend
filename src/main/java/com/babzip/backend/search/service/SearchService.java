@@ -23,9 +23,9 @@ public class SearchService {
         String query = request.query();
         String x = request.x();
         String y = request.y();
+        Long page = request.page();
         String groupCode = "FD6";
         Long radius = 10000L;
-        String output = "json";
 
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -35,6 +35,7 @@ public class SearchService {
                         .queryParam("x",x)
                         .queryParam("y",y)
                         .queryParam("radius",radius)
+                        .queryParam("page",page)
                         .build())
                 .retrieve()
                 .bodyToMono(SearchResponse.class)
