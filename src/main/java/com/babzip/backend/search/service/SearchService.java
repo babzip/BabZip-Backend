@@ -15,7 +15,6 @@ import java.time.Duration;
 @Slf4j
 public class SearchService {
 
-    // TODO : 카카오 API 호출 후 결과를 컨트롤러에 반환하기. 사용자 위치에서 가까운 순으로. 반경 10km. 그룹코드 FD6
     private final KakaoProperties kakaoProperties;
     private final WebClient webClient;
 
