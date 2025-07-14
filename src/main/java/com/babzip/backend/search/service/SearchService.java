@@ -27,6 +27,11 @@ public class SearchService {
         String groupCode = "FD6";
         Long radius = 10000L;
 
+        // TODO 이미 등록된 음식점인지 알려주는 정보도 함께 반환해야함
+        /*
+        API 요청 결과를 변수에 담고
+        가게 ID로 DB 검색 후 DB에 존재한다면 각 가게에 대해 isExist=true 설정하기
+         */
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/search/keyword.json")
