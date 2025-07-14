@@ -1,5 +1,5 @@
 jwt:
-  secret-key: ${jWT_KEY}
+  secret-key: ${JWT_SECRET_KEY}
   access-token-expire-in: 1800
   refresh-token-expire-in: 1209600
 
