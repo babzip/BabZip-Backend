@@ -1,3 +1,11 @@
+server:
+  port: 443
+  ssl:
+    enabled: true
+    key-store: file:/home/ubuntu/keystore.p12
+    key-store-password: ${SSL_SECRET}
+    key-store-type: PKCS12
+
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-token-expire-in: 1800
