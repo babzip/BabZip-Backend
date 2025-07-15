@@ -11,7 +11,7 @@ spring:
           google:
             client-id: 540803440273-6dtj5tfo86g1vj3vll8jvp6q450nvttr.apps.googleusercontent.com
             client-secret: ${GOOGLE_SECRET}
-            redirect-uri: https://babzip.duckdns.org/login/oauth2/code/google
+            redirect-uri: ${BASE_URI}/login/oauth2/code/google
             scope: # google API의 범위 값
               - profile
               - email
@@ -21,7 +21,7 @@ spring:
             client-name: Kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
-            redirect-uri: https://babzip.duckdns.org/login/oauth2/code/kakao
+            redirect-uri: ${BASE_URI}/login/oauth2/code/kakao
             scope:
               - account_email
               - profile_nickname
