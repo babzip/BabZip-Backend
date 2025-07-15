@@ -27,5 +27,5 @@ jobs:
             git pull origin dev
             ./gradlew clean build
             pkill -f 'babzip-0.0.1-SNAPSHOT.jar' || true
-            nohup java -jar build/libs/babzip-0.0.1-SNAPSHOT.jar --spring.profiles.active=${{ secrets.SPRING_PROFILE }} &
+            nohup java -jar build/libs/babzip-0.0.1-SNAPSHOT.jar --spring.profiles.active=${{ secrets.SPRING_PROFILES_ACTIVE }} &
           EOF
