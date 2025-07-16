@@ -7,19 +7,21 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
 
 @Configuration
+@RequiredArgsConstructor
+@EnableConfigurationProperties(SwaggerProperties.class)
 public class SwaggerConfig {
-    @Value("${babzip.swagger.server-url}")
-    private String serverUrl;
 
-    @Value("${babzip.swagger.description}")
-    private String serverDescription;
+    private final SwaggerProperties swaggerProperties;
 
     @Bean
     public OpenAPI openAPI() {
@@ -28,8 +30,8 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(apiInfo())
                 .addServersItem(new Server()
-                        .url(serverUrl)
-                        .description(serverDescription))
+                        .url(swaggerProperties.getServerUrl())
+                        .description(swaggerProperties.getDescription()))
                 .addSecurityItem(securityRequirement)
                 .components(securitySchemes());
     }
