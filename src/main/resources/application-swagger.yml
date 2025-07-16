@@ -1,0 +1,25 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+babzip:
+  cors:
+    origins:
+      - http://localhost:8080
+  swagger:
+    server-url: http://localhost:8080
+    description: "BabZip 로컬 서버"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+babzip:
+  cors:
+    origins:
+      - ${BASE_URI}
+  swagger:
+    server-url: ${BASE_URI}
+    description: "BabZip 개발 서버"
