@@ -6,64 +6,58 @@ import com.babzip.backend.guestbook.entity.Guestbook;
 import com.babzip.backend.guestbook.repository.GuestbookRepository;
 import com.babzip.backend.user.domain.User;
 import com.babzip.backend.user.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-@Service
 @RequiredArgsConstructor
+@Service
 public class GuestbookService {
+
     private final GuestbookRepository guestbookRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public void create(Long userId, GuestbookRequestDto dto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
-
-        Guestbook guestbook = new Guestbook();
-        guestbook.setUser(user);
-        guestbook.setKakaoPlaceId(dto.getKakaoPlaceId());
-        guestbook.setContent(dto.getContent());
-        guestbook.setRating(dto.getRating());
-
+        User user = getUser(userId);
+        Guestbook guestbook = new Guestbook(user, dto.getKakaoPlaceId(), dto.getContent(), dto.getRating());
         guestbookRepository.save(guestbook);
     }
 
-    public List<GuestbookResponseDto> getByKakaoPlaceId(String kakaoPlaceId) {
-        return guestbookRepository.findByKakaoPlaceId(kakaoPlaceId).stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public Page<GuestbookResponseDto> getByUserId(Long userId, Pageable pageable) {
+        return guestbookRepository.findByUserId(userId, pageable)
+                .map(GuestbookResponseDto::toDto);
     }
 
-    public List<GuestbookResponseDto> getByUserId(Long userId) {
-        return guestbookRepository.findByUserId(userId).stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+    @Transactional
+    public void updateAll(Long userId, Long guestbookId, GuestbookRequestDto dto) {
+        Guestbook guestbook = getOwnedGuestbook(userId, guestbookId);
+        guestbook.updateAll(dto.getKakaoPlaceId(), dto.getContent(), dto.getRating());
     }
 
-    public void update(Long guestbookId, Long userId, GuestbookRequestDto dto) {
-        Guestbook guestbook = guestbookRepository.findByIdAndUserId(guestbookId, userId)
-                .orElseThrow(() -> new IllegalArgumentException("수정 권한이 없습니다."));
-
-        guestbook.setContent(dto.getContent());
-        guestbook.setRating(dto.getRating());
+    @Transactional
+    public void updatePartial(Long userId, Long guestbookId, GuestbookRequestDto dto) {
+        Guestbook guestbook = getOwnedGuestbook(userId, guestbookId);
+        guestbook.updatePartial(dto.getContent(), dto.getRating());
     }
 
-    public void delete(Long guestbookId, Long userId) {
-        Guestbook guestbook = guestbookRepository.findByIdAndUserId(guestbookId, userId)
-                .orElseThrow(() -> new IllegalArgumentException("삭제 권한이 없습니다."));
-
+    @Transactional
+    public void delete(Long userId, Long guestbookId) {
+        Guestbook guestbook = getOwnedGuestbook(userId, guestbookId);
         guestbookRepository.delete(guestbook);
     }
 
-    private GuestbookResponseDto toDto(Guestbook g) {
-        return new GuestbookResponseDto(
-                g.getGuestbookId(),
-                g.getKakaoPlaceId(),
-                g.getContent(),
-                g.getRating()
-        );
+    private Guestbook getOwnedGuestbook(Long userId, Long guestbookId) {
+        return guestbookRepository.findByIdAndUserId(guestbookId, userId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 방명록을 찾을 수 없습니다."));
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
     }
 }

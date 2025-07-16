@@ -1,15 +1,19 @@
 package com.babzip.backend.guestbook.dto.response;
 
-import lombok.*;
+import com.babzip.backend.guestbook.entity.Guestbook;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-
-public class GuestbookResponseDto {
-    private Long guestbookId;
-    private String kakaoPlaceId;
-    private String content;
-    private Long rating;
+public record GuestbookResponseDto(
+        Long id,
+        String kakaoPlaceId,
+        String content,
+        Integer rating
+) {
+    public static GuestbookResponseDto toDto(Guestbook guestbook) {
+        return new GuestbookResponseDto(
+                guestbook.getId(),
+                guestbook.getKakaoPlaceId(),
+                guestbook.getContent(),
+                guestbook.getRating()
+        );
+    }
 }
