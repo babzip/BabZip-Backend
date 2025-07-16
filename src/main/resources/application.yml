@@ -2,4 +2,11 @@ spring:
   application:
     name: babzip
   profiles:
+    group:
+      prod: prod
+      dev: dev
+---
+
+spring:
+  profiles:
     active: dev
