@@ -34,15 +34,9 @@ public class GuestbookService {
     }
 
     @Transactional
-    public void updateAll(Long userId, Long guestbookId, GuestbookRequestDto dto) {
-        Guestbook guestbook = getOwnedGuestbook(userId, guestbookId);
-        guestbook.updateAll(dto.getKakaoPlaceId(), dto.getContent(), dto.getRating());
-    }
-
-    @Transactional
     public void updatePartial(Long userId, Long guestbookId, GuestbookRequestDto dto) {
         Guestbook guestbook = getOwnedGuestbook(userId, guestbookId);
-        guestbook.updatePartial(dto.getContent(), dto.getRating());
+        guestbook.updatePartial(dto.getKakaoPlaceId(), dto.getContent(), dto.getRating());
     }
 
     @Transactional

@@ -31,13 +31,8 @@ public class Guestbook {
         this.rating = rating;
     }
 
-    public void updateAll(String kakaoPlaceId, String content, Integer rating) {
-        this.kakaoPlaceId = kakaoPlaceId;
-        this.content = content;
-        this.rating = rating;
-    }
-
-    public void updatePartial(String content, Integer rating) {
+    public void updatePartial(String kakaoPlaceId, String content, Integer rating) {
+        if (kakaoPlaceId != null) this.kakaoPlaceId = kakaoPlaceId;
         if (content != null) this.content = content;
         if (rating != null) this.rating = rating;
     }

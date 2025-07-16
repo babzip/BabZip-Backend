@@ -38,15 +38,6 @@ public class GuestbookController {
         return ResponseEntity.ok(ResponseUtil.createSuccessResponse(response));
     }
 
-    @PutMapping("/{guestbookId}")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ResponseBody<Void>> updateAll(@AssignUserId Long userId,
-                                                        @PathVariable Long guestbookId,
-                                                        @RequestBody GuestbookRequestDto requestDto) {
-        guestbookService.updateAll(userId, guestbookId, requestDto);
-        return ResponseEntity.ok(ResponseUtil.createSuccessResponse());
-    }
-
     @PatchMapping("/{guestbookId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> updatePartial(@AssignUserId Long userId,
