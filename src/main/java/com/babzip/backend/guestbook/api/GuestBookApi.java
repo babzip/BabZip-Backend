@@ -40,6 +40,7 @@ public interface GuestBookApi {
                     @SwaggerApiFailedResponse(ExceptionType.GUEST_BOOK_NOT_FOUND),
             }
     )
+    @AssignUserId
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> create(
@@ -64,6 +65,7 @@ public interface GuestBookApi {
                     @SwaggerApiFailedResponse(ExceptionType.GUEST_BOOK_NOT_FOUND),
             }
     )
+    @AssignUserId
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Page<GuestbookResponseDto>>> getMyGuestbooks(
@@ -87,6 +89,7 @@ public interface GuestBookApi {
                     @SwaggerApiFailedResponse(ExceptionType.GUEST_BOOK_NOT_FOUND),
             }
     )
+    @AssignUserId
     @PatchMapping("/{guestbookId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> updatePartial(
@@ -110,6 +113,7 @@ public interface GuestBookApi {
                     @SwaggerApiFailedResponse(ExceptionType.GUEST_BOOK_NOT_FOUND),
             }
     )
+    @AssignUserId
     @DeleteMapping("/{guestbookId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> delete(
