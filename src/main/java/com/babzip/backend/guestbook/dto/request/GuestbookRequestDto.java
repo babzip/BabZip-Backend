@@ -1,12 +1,13 @@
 package com.babzip.backend.guestbook.dto.request;
 
-import lombok.*;
 
-@Getter
+import lombok.Builder;
 
-public class GuestbookRequestDto {
-    private String kakaoPlaceId; // 카카오에서 받은 음식점 ID
-    private String content;
-    private Integer rating;
+public record GuestbookRequestDto (
+        String restaurantName,
+        String kakaoPlaceId, // 카카오에서 받은 음식점 ID
+        String content,
+        Integer rating
+){
 }
 
