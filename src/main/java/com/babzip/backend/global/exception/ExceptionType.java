@@ -34,7 +34,10 @@ public enum ExceptionType {
 
 
     // User
-    USER_NOT_FOUND(NOT_FOUND, "U001","사용자가 존재하지 않습니다");
+    USER_NOT_FOUND(NOT_FOUND, "U001","사용자가 존재하지 않습니다"),
+
+    // Guestbook
+    GUEST_BOOK_NOT_FOUND(NOT_FOUND, "G001", "방명록이 존재하지 않습니다");
 
     private final HttpStatus status;
     private final String code;
