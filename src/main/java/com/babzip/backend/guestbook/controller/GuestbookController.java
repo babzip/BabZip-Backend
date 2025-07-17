@@ -3,12 +3,14 @@ package com.babzip.backend.guestbook.controller;
 import com.babzip.backend.global.aop.AssignUserId;
 import com.babzip.backend.global.response.ResponseBody;
 import com.babzip.backend.global.response.ResponseUtil;
+import com.babzip.backend.guestbook.api.GuestBookApi;
 import com.babzip.backend.guestbook.dto.request.GuestbookRequestDto;
 import com.babzip.backend.guestbook.dto.response.GuestbookResponseDto;
 import com.babzip.backend.guestbook.service.GuestbookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/guestbook")
-public class GuestbookController {
+public class GuestbookController implements GuestBookApi {
 
     private final GuestbookService guestbookService;
 
@@ -33,7 +35,7 @@ public class GuestbookController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Page<GuestbookResponseDto>>> getMyGuestbooks(
             @AssignUserId Long userId,
-            @PageableDefault(size = 10) Pageable pageable) {
+            @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<GuestbookResponseDto> response = guestbookService.getByUserId(userId, pageable);
         return ResponseEntity.ok(ResponseUtil.createSuccessResponse(response));
     }
