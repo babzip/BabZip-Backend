@@ -40,11 +40,11 @@ public interface GuestBookApi {
                     @SwaggerApiFailedResponse(ExceptionType.GUEST_BOOK_NOT_FOUND),
             }
     )
+    @AssignUserId
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> create(
-            @Parameter(hidden = true)
-            @AssignUserId Long userId,
+            @Parameter(hidden = true) Long userId,
             @RequestBody GuestbookRequestDto requestDto
     );
 
@@ -65,11 +65,11 @@ public interface GuestBookApi {
                     @SwaggerApiFailedResponse(ExceptionType.GUEST_BOOK_NOT_FOUND),
             }
     )
+    @AssignUserId
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Page<GuestbookResponseDto>>> getMyGuestbooks(
-            @Parameter(hidden = true)
-            @AssignUserId Long userId,
+            @Parameter(hidden = true) Long userId,
             @ParameterObject
             @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
     );
@@ -89,11 +89,11 @@ public interface GuestBookApi {
                     @SwaggerApiFailedResponse(ExceptionType.GUEST_BOOK_NOT_FOUND),
             }
     )
+    @AssignUserId
     @PatchMapping("/{guestbookId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> updatePartial(
-            @Parameter(hidden = true)
-            @AssignUserId Long userId,
+            @Parameter(hidden = true) Long userId,
             @PathVariable Long guestbookId,
             @RequestBody GuestbookRequestDto requestDto
     );
@@ -113,11 +113,11 @@ public interface GuestBookApi {
                     @SwaggerApiFailedResponse(ExceptionType.GUEST_BOOK_NOT_FOUND),
             }
     )
+    @AssignUserId
     @DeleteMapping("/{guestbookId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> delete(
-            @Parameter(hidden = true)
-            @AssignUserId Long userId,
+            @Parameter(hidden = true) Long userId,
             @PathVariable Long guestbookId
     );
 

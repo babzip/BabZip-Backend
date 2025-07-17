@@ -1,8 +1,10 @@
 package com.babzip.backend.search.controller;
 
+import com.babzip.backend.global.aop.AssignUserId;
 import com.babzip.backend.global.response.ResponseBody;
+import com.babzip.backend.search.SearchApi;
 import com.babzip.backend.search.dto.request.SearchRequest;
-import com.babzip.backend.search.dto.response.SearchResponse;
+import com.babzip.backend.search.dto.response.KakaoSearchResponse;
 import com.babzip.backend.search.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,14 +19,15 @@ import static com.babzip.backend.global.response.ResponseUtil.createSuccessRespo
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class SearchController {
+public class SearchController implements SearchApi {
 
     private final SearchService searchService;
 
+    @AssignUserId
     @GetMapping("/search")
     @PreAuthorize(" isAuthenticated()")
-    public ResponseEntity<ResponseBody<SearchResponse>> search(@RequestBody SearchRequest request){
-        SearchResponse response = searchService.search(request);
+    public ResponseEntity<ResponseBody<KakaoSearchResponse>> search(@RequestBody SearchRequest request, Long userId){
+        KakaoSearchResponse response = searchService.search(request, userId);
         return ResponseEntity.ok(createSuccessResponse(response));
     }
 }
