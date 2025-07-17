@@ -2,13 +2,18 @@ package com.babzip.backend.user.service;
 
 import com.babzip.backend.global.exception.BusinessException;
 import com.babzip.backend.global.exception.ExceptionType;
+import com.babzip.backend.guestbook.entity.Guestbook;
+import com.babzip.backend.guestbook.repository.GuestbookRepository;
 import com.babzip.backend.token.repository.RefreshTokenRepository;
 import com.babzip.backend.user.domain.User;
 import com.babzip.backend.user.domain.UserRole;
+import com.babzip.backend.user.dto.response.UserProfileResponse;
 import com.babzip.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +21,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final GuestbookRepository guestbookRepository;
 
     public boolean isAdmin(Long userId) {
         User user = userRepository.findById(userId)
@@ -29,5 +35,15 @@ public class UserService {
     @Transactional
     public void logout(Long userId){
         refreshTokenRepository.deleteByUserId(userId);
+    }
+
+    public UserProfileResponse getMyProfile(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->new BusinessException(ExceptionType.USER_NOT_FOUND));
+
+        Long restaurantCount = guestbookRepository.countByUserId(userId);
+        Double averageRating = guestbookRepository.findAverageRatingByUserId(userId);
+
+        return UserProfileResponse.toDto(user, restaurantCount, averageRating);
     }
 }
