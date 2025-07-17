@@ -2,7 +2,7 @@ package com.babzip.backend.search.controller;
 
 import com.babzip.backend.global.aop.AssignUserId;
 import com.babzip.backend.global.response.ResponseBody;
-import com.babzip.backend.search.SearchApi;
+import com.babzip.backend.search.api.SearchApi;
 import com.babzip.backend.search.dto.request.SearchRequest;
 import com.babzip.backend.search.dto.response.KakaoSearchResponse;
 import com.babzip.backend.search.service.SearchService;

@@ -37,7 +37,10 @@ public enum ExceptionType {
     USER_NOT_FOUND(NOT_FOUND, "U001","사용자가 존재하지 않습니다"),
 
     // Guestbook
-    GUEST_BOOK_NOT_FOUND(NOT_FOUND, "G001", "방명록이 존재하지 않습니다");
+    GUEST_BOOK_NOT_FOUND(NOT_FOUND, "G001", "방명록이 존재하지 않습니다"),
+
+    // Top10
+    TOP10_LIMIT_EXCEEDED(NOT_ACCEPTABLE, "T001", "10개를 초과하는 방명록은 Top10에 등록할 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;
