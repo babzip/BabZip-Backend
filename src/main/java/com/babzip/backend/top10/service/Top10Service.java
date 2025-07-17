@@ -32,7 +32,7 @@ public class Top10Service {
 
         for (Top10Request r : request) {
 
-            if (r == null || r.rank() == null || r.restaurantName() == null || r.address() == null) {
+            if (r == null || r.rankValue() == null || r.restaurantName() == null || r.address() == null) {
                 continue;
             }
 
@@ -41,7 +41,7 @@ public class Top10Service {
                     .userId(userId)
                     .restaurantName(r.restaurantName())
                     .address(r.address())
-                    .rank(r.rank())
+                    .rankValue(r.rankValue())
                     .build()
             );
         }
