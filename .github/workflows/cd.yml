@@ -23,9 +23,23 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
             cd ~/BabZip-Backend
             git pull origin dev
             ./gradlew clean build
+            pkill -f 'babzip-0.0.1-SNAPSHOT.jar' || true
+
+            echo "🔍 서버 사전 실행 테스트..."
+            java -jar build/libs/babzip-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod > /tmp/test.log 2>&1 &
+            sleep 5
+
+            if grep -Ei 'Exception|ERROR' /tmp/test.log; then
+              echo "서버 실행 중 에러 발생!"
+              cat /tmp/test.log
+              exit 1
+            fi
+
+            echo " 사전 실행 성공. 백그라운드로 실행 시작..."
             pkill -f 'babzip-0.0.1-SNAPSHOT.jar' || true
             nohup java -jar build/libs/babzip-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod > nohup.out 2>&1 &
           EOF
