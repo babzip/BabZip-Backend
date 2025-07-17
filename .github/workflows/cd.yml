@@ -31,7 +31,7 @@ jobs:
 
             echo "🔍 서버 사전 실행 테스트..."
             java -jar build/libs/babzip-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod > /tmp/test.log 2>&1 &
-            sleep 5
+            sleep 10
 
             if grep -Ei 'Exception|ERROR' /tmp/test.log; then
               echo "서버 실행 중 에러 발생!"
