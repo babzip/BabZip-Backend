@@ -26,3 +26,10 @@ spring:
         highlight_sql: true
         default_batch_fetch_size: 100
 
+logging:
+  level:
+    org.springframework.web.servlet: debug
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+    org.hibernate.orm.jdb.extract: trace
+    org.hibernate.type.descriptor.sql: trace
