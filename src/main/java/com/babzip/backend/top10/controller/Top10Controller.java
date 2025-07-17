@@ -2,6 +2,7 @@ package com.babzip.backend.top10.controller;
 
 import com.babzip.backend.global.aop.AssignUserId;
 import com.babzip.backend.global.response.ResponseBody;
+import com.babzip.backend.top10.api.Top10Api;
 import com.babzip.backend.top10.dto.request.Top10Request;
 import com.babzip.backend.top10.dto.response.Top10Response;
 import com.babzip.backend.top10.service.Top10Service;
@@ -21,7 +22,7 @@ import static com.babzip.backend.global.response.ResponseUtil.createSuccessRespo
 @RestController
 @RequestMapping("/top10")
 @RequiredArgsConstructor
-public class Top10Controller {
+public class Top10Controller implements Top10Api {
 
     private final Top10Service top10Service;
 

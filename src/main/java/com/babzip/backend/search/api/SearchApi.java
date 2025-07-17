@@ -1,4 +1,4 @@
-package com.babzip.backend.search;
+package com.babzip.backend.search.api;
 
 import com.babzip.backend.global.aop.AssignUserId;
 import com.babzip.backend.global.config.swagger.SwaggerApiFailedResponse;
