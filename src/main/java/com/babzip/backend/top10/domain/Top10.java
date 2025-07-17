@@ -21,13 +21,13 @@ public class Top10 extends BaseEntity {
 
     private String restaurantName;
     private String address;
-    private Long rank;
+    private Long rankValue;
 
     @Builder
-    public Top10(Long userId,String restaurantName, String address, Long rank) {
+    public Top10(Long userId,String restaurantName, String address, Long rankValue) {
         this.userId = userId;
         this.restaurantName = restaurantName;
         this.address = address;
-        this.rank = rank;
+        this.rankValue = rankValue;
     }
 }

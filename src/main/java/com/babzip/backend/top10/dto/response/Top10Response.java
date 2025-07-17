@@ -5,13 +5,13 @@ import com.babzip.backend.top10.domain.Top10;
 public record Top10Response (
         String restaurantName,
         String address,
-        Long rank
+        Long rankValue
 ){
     public static Top10Response toDto(Top10 top10) {
         return new Top10Response(
                 top10.getRestaurantName(),
                 top10.getAddress(),
-                top10.getRank()
+                top10.getRankValue()
         );
     }
 }

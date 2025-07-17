@@ -42,7 +42,7 @@ public class Top10Controller implements Top10Api {
     @PreAuthorize("isAuthenticated() and hasAuthority('USER')")
     public ResponseEntity<ResponseBody<Page<Top10Response>>> getTop10(
             Long userId,
-            @PageableDefault(sort = "rank", direction = Sort.Direction.ASC) Pageable pageable){
+            @PageableDefault(sort = "rankValue", direction = Sort.Direction.ASC) Pageable pageable){
         Page<Top10Response> response = top10Service.getTop10(userId, pageable);
         return ResponseEntity.ok(createSuccessResponse(response));
     }
