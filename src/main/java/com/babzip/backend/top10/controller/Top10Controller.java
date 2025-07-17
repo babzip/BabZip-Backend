@@ -8,6 +8,8 @@ import com.babzip.backend.top10.service.Top10Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +39,9 @@ public class Top10Controller {
     @AssignUserId
     @GetMapping
     @PreAuthorize("isAuthenticated() and hasAuthority('USER')")
-    public ResponseEntity<ResponseBody<Page<Top10Response>>> getTop10(Long userId, Pageable pageable){
+    public ResponseEntity<ResponseBody<Page<Top10Response>>> getTop10(
+            Long userId,
+            @PageableDefault(sort = "rank", direction = Sort.Direction.ASC) Pageable pageable){
         Page<Top10Response> response = top10Service.getTop10(userId, pageable);
         return ResponseEntity.ok(createSuccessResponse(response));
     }
