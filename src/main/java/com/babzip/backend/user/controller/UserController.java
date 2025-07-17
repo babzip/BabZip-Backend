@@ -3,6 +3,7 @@ package com.babzip.backend.user.controller;
 import com.babzip.backend.global.aop.AssignUserId;
 import com.babzip.backend.global.response.ResponseBody;
 import com.babzip.backend.user.api.UserApi;
+import com.babzip.backend.user.dto.response.UserProfileResponse;
 import com.babzip.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,13 @@ public class UserController implements UserApi {
     public ResponseEntity<ResponseBody<Void>> logout(Long userId){
         userService.logout(userId);
         return ResponseEntity.ok(createSuccessResponse());
+    }
+
+    @AssignUserId
+    @GetMapping("/me")
+    @PreAuthorize(" isAuthenticated() and hasAuthority('USER')")
+    public ResponseEntity<ResponseBody<UserProfileResponse>> getMyProfile(Long userId){
+        return ResponseEntity.ok(createSuccessResponse(userService.getMyProfile(userId)));
     }
 
 }
