@@ -25,7 +25,13 @@ public class GuestbookService {
     @Transactional
     public void create(Long userId, GuestbookRequestDto dto) {
         User user = getUser(userId);
-        Guestbook guestbook = new Guestbook(user, dto.getKakaoPlaceId(), dto.getContent(), dto.getRating());
+        Guestbook guestbook = Guestbook.builder()
+                .restaurantName(dto.restaurantName())
+                .user(user)
+                .kakaoPlaceId(dto.kakaoPlaceId())
+                .content(dto.content())
+                .rating(dto.rating())
+                .build();
         guestbookRepository.save(guestbook);
     }
 
@@ -38,7 +44,7 @@ public class GuestbookService {
     @Transactional
     public void updatePartial(Long userId, Long guestbookId, GuestbookRequestDto dto) {
         Guestbook guestbook = getOwnedGuestbook(userId, guestbookId);
-        guestbook.updatePartial(dto.getKakaoPlaceId(), dto.getContent(), dto.getRating());
+        guestbook.updatePartial(dto.restaurantName(), dto.kakaoPlaceId(), dto.content(), dto.rating());
     }
 
     @Transactional
