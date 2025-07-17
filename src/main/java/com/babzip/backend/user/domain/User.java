@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class User extends BaseEntity {
 
     @Id
@@ -26,15 +27,21 @@ public class User extends BaseEntity {
     @Getter
     private UserRole role;
 
+    private String name;
+
+    private String picture;
+
     @Enumerated(value = EnumType.STRING)
     private OAuth2Provider provider;
 
     private String providerId;
 
     @Builder
-    public User(String email, UserRole role, OAuth2Provider provider, String providerId) {
+    public User(String email, UserRole role, String name, String picture, OAuth2Provider provider, String providerId) {
         this.email = email;
         this.role = role;
+        this.name = name;
+        this.picture = picture;
         this.provider = provider;
         this.providerId = providerId;
     }
