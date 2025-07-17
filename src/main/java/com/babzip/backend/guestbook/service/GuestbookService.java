@@ -1,5 +1,7 @@
 package com.babzip.backend.guestbook.service;
 
+import com.babzip.backend.global.exception.BusinessException;
+import com.babzip.backend.global.exception.ExceptionType;
 import com.babzip.backend.guestbook.dto.request.GuestbookRequestDto;
 import com.babzip.backend.guestbook.dto.response.GuestbookResponseDto;
 import com.babzip.backend.guestbook.entity.Guestbook;
@@ -47,11 +49,11 @@ public class GuestbookService {
 
     private Guestbook getOwnedGuestbook(Long userId, Long guestbookId) {
         return guestbookRepository.findByIdAndUserId(guestbookId, userId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 방명록을 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(ExceptionType.GUEST_BOOK_NOT_FOUND));
     }
 
     private User getUser(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(ExceptionType.USER_NOT_FOUND));
     }
 }
