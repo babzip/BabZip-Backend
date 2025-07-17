@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class Top10Service {
 
     private final Top10Repository top10Repository;
 
+    @Transactional
     public void createTop10(Long userId, List<Top10Request> request){
 
         if (request.size() > 10) {
