@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -70,6 +71,7 @@ public interface Top10Api {
     @PreAuthorize("isAuthenticated() and hasAuthority('USER')")
     public ResponseEntity<ResponseBody<Page<Top10Response>>> getTop10(
             @Parameter(hidden = true) Long userId,
+            @ParameterObject
             @PageableDefault(sort = "rankValue", direction = Sort.Direction.ASC) Pageable pageable
     );
 }
