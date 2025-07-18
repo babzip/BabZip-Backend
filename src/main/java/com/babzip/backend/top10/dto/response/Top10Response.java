@@ -14,4 +14,8 @@ public record Top10Response (
                 top10.getRankValue()
         );
     }
+
+    public static Top10Response empty() {
+        return new Top10Response(null, null, null);
+    }
 }

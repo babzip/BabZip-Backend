@@ -8,11 +8,13 @@ import com.babzip.backend.top10.dto.response.Top10Response;
 import com.babzip.backend.top10.repository.Top10Repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,8 +50,19 @@ public class Top10Service {
     }
 
     public Page<Top10Response> getTop10(Long userId, Pageable pageable){
-        Page<Top10> response = top10Repository.findByUserId(userId, pageable);
-        return response.map(Top10Response::toDto);
+        Page<Top10> result = top10Repository.findByUserId(userId, pageable);
 
+        List<Top10Response> content = result.getContent().stream()
+                .map(Top10Response::toDto)
+                .collect(Collectors.toList());
+
+        int requestedSize = pageable.getPageSize();
+        int missingCount = requestedSize - content.size();
+
+        for (int i = 0; i < missingCount; i++) {
+            content.add(Top10Response.empty()); // 필드값이 모두 null인 객체 추가
+        }
+
+        return new PageImpl<>(content, pageable, requestedSize);
     }
 }
