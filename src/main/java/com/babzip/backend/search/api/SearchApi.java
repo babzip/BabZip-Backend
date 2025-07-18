@@ -29,7 +29,7 @@ public interface SearchApi {
     @ApiResponse(content = @Content(schema = @Schema(implementation = KakaoSearchResponse.class)))
     @SwaggerApiResponses(
             success = @SwaggerApiSuccessResponse(
-                    responsePage = KakaoSearchResponse.class,
+                    response = KakaoSearchResponse.class,
                     description = "음식점 검색 성공"
             ),
             errors = {
