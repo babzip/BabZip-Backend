@@ -21,7 +21,6 @@ import java.io.IOException;
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtHandler jwtHandler;
-    private static final String URI = "/auth/success";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -34,11 +33,17 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         JwtUserClaim jwtUserClaim = new JwtUserClaim(userId,role);
         Token token = jwtHandler.createTokens(jwtUserClaim);
 
-        // 토큰 전달을 위한 redirect
-        String redirectUrl = UriComponentsBuilder.fromUriString(URI)
+        String targetUrl = request.getParameter("redirect-uri");
+        if (targetUrl == null || targetUrl.isBlank()) {
+            targetUrl = "/auth/success"; // 기본값
+        }
+
+        // 토큰 붙여서 리다이렉트
+        String redirectUrl = UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("accessToken", token.getAccessToken())
                 .queryParam("refreshToken", token.getRefreshToken())
                 .build().toUriString();
+
         System.out.println(redirectUrl);
         response.sendRedirect(redirectUrl);
     }
