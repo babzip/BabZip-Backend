@@ -1,6 +1,7 @@
 package com.babzip.backend.token.controller;
 
 import com.babzip.backend.global.response.ResponseBody;
+import com.babzip.backend.token.api.TokenApi;
 import com.babzip.backend.token.dto.request.TokenRequest;
 import com.babzip.backend.token.dto.response.TokenResponse;
 import com.babzip.backend.token.entity.Token;
@@ -18,7 +19,7 @@ import static com.babzip.backend.global.response.ResponseUtil.createSuccessRespo
 @RestController
 @RequestMapping("/auth/token")
 @RequiredArgsConstructor
-public class TokenController {
+public class TokenController implements TokenApi {
     private final TokenService tokenService;
 
     @PostMapping("/refresh")
