@@ -9,6 +9,7 @@ import com.babzip.backend.global.response.ResponseBody;
 import com.babzip.backend.global.response.ResponseUtil;
 import com.babzip.backend.guestbook.dto.request.GuestbookRequestDto;
 import com.babzip.backend.guestbook.dto.response.GuestbookResponseDto;
+import com.babzip.backend.guestbook.dto.response.GuestbookSearchResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -121,4 +122,26 @@ public interface GuestBookApi {
             @PathVariable Long guestbookId
     );
 
+    @Operation(
+            summary = "방명록 검색",
+            description = "사용자는 마이페이지에서 방명록을 검색할 수 있습니다."
+    )
+    @ApiResponse(content = @Content(schema = @Schema(implementation = GuestbookSearchResponse.class)))
+    @SwaggerApiResponses(
+            success = @SwaggerApiSuccessResponse(
+                    responsePage = GuestbookSearchResponse.class,
+                    description = "방명록 검색 성공"
+            ),
+            errors = {
+                    @SwaggerApiFailedResponse(ExceptionType.NEED_AUTHORIZED)
+            }
+    )
+    @AssignUserId
+    @GetMapping("/search/{query}")
+    public ResponseEntity<ResponseBody<Page<GuestbookSearchResponse>>> search(
+            @Parameter(hidden = true) Long userId,
+            @PathVariable String query,
+            @ParameterObject
+            @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
+    );
 }
