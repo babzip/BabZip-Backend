@@ -4,6 +4,7 @@ import com.babzip.backend.global.exception.BusinessException;
 import com.babzip.backend.global.exception.ExceptionType;
 import com.babzip.backend.guestbook.dto.request.GuestbookRequestDto;
 import com.babzip.backend.guestbook.dto.response.GuestbookResponseDto;
+import com.babzip.backend.guestbook.dto.response.GuestbookSearchResponse;
 import com.babzip.backend.guestbook.entity.Guestbook;
 import com.babzip.backend.guestbook.repository.GuestbookRepository;
 import com.babzip.backend.user.domain.User;
@@ -27,6 +28,7 @@ public class GuestbookService {
         User user = getUser(userId);
         Guestbook guestbook = Guestbook.builder()
                 .restaurantName(dto.restaurantName())
+                .address(dto.address())
                 .user(user)
                 .kakaoPlaceId(dto.kakaoPlaceId())
                 .content(dto.content())
@@ -61,5 +63,9 @@ public class GuestbookService {
     private User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ExceptionType.USER_NOT_FOUND));
+    }
+
+    public Page<GuestbookSearchResponse> search(String query, Pageable pageable, Long userId){
+        return guestbookRepository.searchByRestaurantName(query, pageable, userId);
     }
 }

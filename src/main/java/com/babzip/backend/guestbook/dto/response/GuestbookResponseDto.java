@@ -6,7 +6,7 @@ public record GuestbookResponseDto(
         String restaurantName,
         String kakaoPlaceId,
         String content,
-        Integer rating
+        Long rating
 ) {
     public static GuestbookResponseDto toDto(Guestbook guestbook) {
         return new GuestbookResponseDto(
