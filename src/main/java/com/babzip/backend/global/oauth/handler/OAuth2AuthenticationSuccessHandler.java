@@ -35,7 +35,10 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         JwtUserClaim jwtUserClaim = new JwtUserClaim(userId,role);
         Token token = jwtHandler.createTokens(jwtUserClaim);
 
-        String targetUrl = "http://localhost:5173";
+        String targetUrl = "http://localhost:5173/auth/success";
+
+
+
 
         // 토큰 붙여서 리다이렉트
         String redirectUrl = UriComponentsBuilder.fromUriString(targetUrl)
