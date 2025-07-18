@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface GuestbookRepository extends JpaRepository<Guestbook, Long> {
+public interface GuestbookRepository extends JpaRepository<Guestbook, Long>, GuestbookQueryDslRepository {
     Page<Guestbook> findByUserId(Long userId, Pageable pageable);
     Optional<Guestbook> findByIdAndUserId(Long id, Long userId);
 
