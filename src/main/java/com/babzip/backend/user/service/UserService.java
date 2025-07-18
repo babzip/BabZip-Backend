@@ -2,7 +2,6 @@ package com.babzip.backend.user.service;
 
 import com.babzip.backend.global.exception.BusinessException;
 import com.babzip.backend.global.exception.ExceptionType;
-import com.babzip.backend.guestbook.entity.Guestbook;
 import com.babzip.backend.guestbook.repository.GuestbookRepository;
 import com.babzip.backend.token.repository.RefreshTokenRepository;
 import com.babzip.backend.user.domain.User;
