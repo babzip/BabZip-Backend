@@ -15,7 +15,7 @@ public record Top10Response (
         );
     }
 
-    public static Top10Response empty() {
-        return new Top10Response(null, null, null);
+    public static Top10Response empty(Long currCount) {
+        return new Top10Response(null, null, currCount);
     }
 }

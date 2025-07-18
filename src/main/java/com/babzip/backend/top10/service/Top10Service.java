@@ -57,10 +57,12 @@ public class Top10Service {
                 .collect(Collectors.toList());
 
         int requestedSize = pageable.getPageSize();
-        int missingCount = requestedSize - content.size();
 
-        for (int i = 0; i < missingCount; i++) {
-            content.add(Top10Response.empty()); // 필드값이 모두 null인 객체 추가
+        int currCount = content.size();
+
+        for (int i = currCount + 1; i <= requestedSize; i++) {
+            content.add(Top10Response.empty((long) i)); // 필드값이 모두 null인 객체 추가
+
         }
 
         return new PageImpl<>(content, pageable, requestedSize);
