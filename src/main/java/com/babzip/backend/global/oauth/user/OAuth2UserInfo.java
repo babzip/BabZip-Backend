@@ -46,12 +46,14 @@ public record OAuth2UserInfo(
 
         log.info("Kakao User Info: {}", account.get("nickname"));
         log.info("Kakao User Info: {}", account.get("email"));
-        log.info("Kakao User Info: {}", account.get("profile_image_url"));
+        log.info("Kakao User Info: {}", account.get("profile_image"));
+
+        Map<String, Object> properties = (Map<String, Object>) account.get("profile");
 
         return OAuth2UserInfo.builder()
-                .name((String) account.get("nickname"))
+                .name((String) properties.get("nickname"))
                 .email((String) account.get("email"))
-                .profile((String) account.get("profile_image_url"))
+                .profile((String) properties.get("profile_image_url"))
                 .build();
     }
 

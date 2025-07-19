@@ -1,7 +1,10 @@
 package com.babzip.backend.guestbook.service;
 
+import com.babzip.backend.global.exception.BusinessException;
+import com.babzip.backend.global.exception.ExceptionType;
 import com.babzip.backend.guestbook.dto.request.GuestbookRequestDto;
 import com.babzip.backend.guestbook.dto.response.GuestbookResponseDto;
+import com.babzip.backend.guestbook.dto.response.GuestbookSearchResponse;
 import com.babzip.backend.guestbook.entity.Guestbook;
 import com.babzip.backend.guestbook.repository.GuestbookRepository;
 import com.babzip.backend.user.domain.User;
@@ -23,7 +26,14 @@ public class GuestbookService {
     @Transactional
     public void create(Long userId, GuestbookRequestDto dto) {
         User user = getUser(userId);
-        Guestbook guestbook = new Guestbook(user, dto.getKakaoPlaceId(), dto.getContent(), dto.getRating());
+        Guestbook guestbook = Guestbook.builder()
+                .restaurantName(dto.restaurantName())
+                .address(dto.address())
+                .user(user)
+                .kakaoPlaceId(dto.kakaoPlaceId())
+                .content(dto.content())
+                .rating(dto.rating())
+                .build();
         guestbookRepository.save(guestbook);
     }
 
@@ -35,23 +45,29 @@ public class GuestbookService {
 
     @Transactional
     public void updatePartial(Long userId, String kakaoPlaceId, GuestbookRequestDto dto) {
-        Guestbook guestbook = getGuestbookByPlaceAndUser(userId, kakaoPlaceId);
-        guestbook.updatePartial(dto.getKakaoPlaceId(), dto.getContent(), dto.getRating());
+        Guestbook guestbook = guestbookRepository.findByKakaoPlaceIdAndUserId(kakaoPlaceId, userId)
+                .orElseThrow(() -> new BusinessException(ExceptionType.GUEST_BOOK_NOT_FOUND));
+        guestbook.updatePartial(dto.restaurantName(), dto.kakaoPlaceId(), dto.content(), dto.rating());
     }
 
     @Transactional
     public void delete(Long userId, String kakaoPlaceId) {
-        Guestbook guestbook = getGuestbookByPlaceAndUser(userId, kakaoPlaceId);
+        Guestbook guestbook = guestbookRepository.findByKakaoPlaceIdAndUserId(kakaoPlaceId, userId)
+                .orElseThrow(() -> new BusinessException(ExceptionType.GUEST_BOOK_NOT_FOUND));
         guestbookRepository.delete(guestbook);
     }
 
-    private Guestbook getGuestbookByPlaceAndUser(Long userId, String kakaoPlaceId) {
-        return guestbookRepository.findByKakaoPlaceIdAndUserId(kakaoPlaceId, userId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 방명록을 찾을 수 없습니다."));
+    private Guestbook getOwnedGuestbook(Long userId, Long guestbookId) {
+        return guestbookRepository.findByIdAndUserId(guestbookId, userId)
+                .orElseThrow(() -> new BusinessException(ExceptionType.GUEST_BOOK_NOT_FOUND));
     }
 
     private User getUser(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(ExceptionType.USER_NOT_FOUND));
+    }
+
+    public Page<GuestbookSearchResponse> search(String query, Pageable pageable, Long userId){
+        return guestbookRepository.searchByRestaurantName(query, pageable, userId);
     }
 }

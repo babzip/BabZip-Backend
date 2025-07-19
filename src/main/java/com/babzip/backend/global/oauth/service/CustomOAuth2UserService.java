@@ -67,6 +67,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private User getOrSave(OAuth2UserInfo oAuth2UserInfo, String registrationId, String providerId) {
 
         OAuth2Provider provider;
+        log.info("oauth2UserInfo: {}", oAuth2UserInfo);
         if(registrationId.equals("google")) {
             provider = OAuth2Provider.GOOGLE;
         }
@@ -76,11 +77,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             provider = null;
         }
 
+
+
         User user = userRepository.findByEmail(oAuth2UserInfo.email())
                 .orElseGet(() ->
                         User.builder()
                                 .email(oAuth2UserInfo.email())
                                 .role(UserRole.USER)
+                                .name(oAuth2UserInfo.name())
+                                .picture(oAuth2UserInfo.profile())
                                 .provider(provider)
                                 .providerId(providerId)
                                 .build()

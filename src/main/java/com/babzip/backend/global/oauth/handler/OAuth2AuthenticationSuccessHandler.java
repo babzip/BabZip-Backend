@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -18,10 +19,10 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtHandler jwtHandler;
-    private static final String URI = "/auth/success";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -34,11 +35,17 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         JwtUserClaim jwtUserClaim = new JwtUserClaim(userId,role);
         Token token = jwtHandler.createTokens(jwtUserClaim);
 
-        // 토큰 전달을 위한 redirect
-        String redirectUrl = UriComponentsBuilder.fromUriString(URI)
+        String targetUrl = "http://localhost:5173/auth/success";
+
+
+
+
+        // 토큰 붙여서 리다이렉트
+        String redirectUrl = UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("accessToken", token.getAccessToken())
                 .queryParam("refreshToken", token.getRefreshToken())
                 .build().toUriString();
+
         System.out.println(redirectUrl);
         response.sendRedirect(redirectUrl);
     }

@@ -1,14 +1,16 @@
 package com.babzip.backend.search.service;
 
 import com.babzip.backend.global.oauth.user.KakaoProperties;
+import com.babzip.backend.guestbook.repository.GuestbookRepository;
 import com.babzip.backend.search.dto.request.SearchRequest;
-import com.babzip.backend.search.dto.response.SearchResponse;
+import com.babzip.backend.search.dto.response.KakaoSearchResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +19,9 @@ public class SearchService {
 
     private final KakaoProperties kakaoProperties;
     private final WebClient webClient;
+    private final GuestbookRepository guestbookRepository;
 
-    public SearchResponse search(SearchRequest request){
+    public KakaoSearchResponse search(SearchRequest request, Long userId){
 
         String query = request.query();
         String x = request.x();
@@ -32,7 +35,7 @@ public class SearchService {
         API 요청 결과를 변수에 담고
         가게 ID로 DB 검색 후 DB에 존재한다면 각 가게에 대해 isExist=true 설정하기
          */
-        return webClient.get()
+        KakaoSearchResponse kakaoResponse =  webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/search/keyword.json")
                         .queryParam("query", query)
@@ -43,8 +46,12 @@ public class SearchService {
                         .queryParam("page",page)
                         .build())
                 .retrieve()
-                .bodyToMono(SearchResponse.class)
+                .bodyToMono(KakaoSearchResponse.class)
                 .block(Duration.ofSeconds(3));
+
+        List<String> registeredPlaceIds = guestbookRepository.findAllKakaoPlaceIdByUserId(userId);
+
+        return kakaoResponse.toResponse(kakaoResponse, registeredPlaceIds);
     }
 
 }

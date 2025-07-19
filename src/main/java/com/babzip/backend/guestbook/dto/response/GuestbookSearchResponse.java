@@ -1,25 +1,23 @@
 package com.babzip.backend.guestbook.dto.response;
 
 import com.babzip.backend.guestbook.entity.Guestbook;
+
 import java.time.LocalDateTime;
 
-public record GuestbookResponseDto(
+public record GuestbookSearchResponse (
         String restaurantName,
-        String kakaoPlaceId,
+        String address,
         String content,
         Long rating,
-        String address,
         LocalDateTime createdAt
-) {
-    public static GuestbookResponseDto toDto(Guestbook guestbook) {
-        return new GuestbookResponseDto(
+){
+    public static GuestbookSearchResponse toDto(Guestbook guestbook) {
+        return new GuestbookSearchResponse(
                 guestbook.getRestaurantName(),
-                guestbook.getKakaoPlaceId(),
+                guestbook.getAddress(),
                 guestbook.getContent(),
                 guestbook.getRating(),
-                guestbook.getAddress(),
                 guestbook.getCreatedAt()
-
         );
     }
 }
