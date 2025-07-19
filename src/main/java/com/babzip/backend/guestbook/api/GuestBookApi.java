@@ -91,11 +91,10 @@ public interface GuestBookApi {
             }
     )
     @AssignUserId
-    @PatchMapping("/{kakaoPlaceId}")
+    @PatchMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> updatePartial(
             @Parameter(hidden = true) Long userId,
-            @PathVariable String kakaoPlaceId,
             @RequestBody GuestbookRequestDto requestDto
     );
 
