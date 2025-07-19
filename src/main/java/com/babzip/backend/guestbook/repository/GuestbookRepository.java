@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface GuestbookRepository extends JpaRepository<Guestbook, Long>, GuestbookQueryDslRepository {
     Page<Guestbook> findByUserId(Long userId, Pageable pageable);
     Optional<Guestbook> findByIdAndUserId(Long id, Long userId);
+    Optional<Guestbook> findByKakaoPlaceIdAndUserId(String kakaoPlaceId, Long userId);
 
     @Query("SELECT g.kakaoPlaceId FROM Guestbook g WHERE g.user.id = :userId")
     List<String> findAllKakaoPlaceIdByUserId(Long userId);

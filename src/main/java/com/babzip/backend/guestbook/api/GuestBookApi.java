@@ -91,11 +91,11 @@ public interface GuestBookApi {
             }
     )
     @AssignUserId
-    @PatchMapping("/{guestbookId}")
+    @PatchMapping("/{kakaoPlaceId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> updatePartial(
             @Parameter(hidden = true) Long userId,
-            @PathVariable Long guestbookId,
+            @PathVariable String kakaoPlaceId,
             @RequestBody GuestbookRequestDto requestDto
     );
 
@@ -115,11 +115,11 @@ public interface GuestBookApi {
             }
     )
     @AssignUserId
-    @DeleteMapping("/{guestbookId}")
+    @DeleteMapping("/{kakaoPlaceId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> delete(
             @Parameter(hidden = true) Long userId,
-            @PathVariable Long guestbookId
+            @PathVariable String kakaoPlaceId
     );
 
     @Operation(

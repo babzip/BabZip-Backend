@@ -44,14 +44,16 @@ public class GuestbookService {
     }
 
     @Transactional
-    public void updatePartial(Long userId, Long guestbookId, GuestbookRequestDto dto) {
-        Guestbook guestbook = getOwnedGuestbook(userId, guestbookId);
+    public void updatePartial(Long userId, String kakaoPlaceId, GuestbookRequestDto dto) {
+        Guestbook guestbook = guestbookRepository.findByKakaoPlaceIdAndUserId(kakaoPlaceId, userId)
+                .orElseThrow(() -> new BusinessException(ExceptionType.GUEST_BOOK_NOT_FOUND));
         guestbook.updatePartial(dto.restaurantName(), dto.kakaoPlaceId(), dto.content(), dto.rating());
     }
 
     @Transactional
-    public void delete(Long userId, Long guestbookId) {
-        Guestbook guestbook = getOwnedGuestbook(userId, guestbookId);
+    public void delete(Long userId, String kakaoPlaceId) {
+        Guestbook guestbook = guestbookRepository.findByKakaoPlaceIdAndUserId(kakaoPlaceId, userId)
+                .orElseThrow(() -> new BusinessException(ExceptionType.GUEST_BOOK_NOT_FOUND));
         guestbookRepository.delete(guestbook);
     }
 

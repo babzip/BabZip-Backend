@@ -8,7 +8,6 @@ import com.babzip.backend.guestbook.dto.request.GuestbookRequestDto;
 import com.babzip.backend.guestbook.dto.response.GuestbookResponseDto;
 import com.babzip.backend.guestbook.dto.response.GuestbookSearchResponse;
 import com.babzip.backend.guestbook.service.GuestbookService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,24 +46,24 @@ public class GuestbookController implements GuestBookApi {
     }
 
     @AssignUserId
-    @PatchMapping("/{guestbookId}")
+    @PatchMapping("/{kakaoPlaceId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> updatePartial(
             Long userId,
-            @PathVariable Long guestbookId,
+            @PathVariable String kakaoPlaceId,
             @RequestBody GuestbookRequestDto requestDto
     ) {
-        guestbookService.updatePartial(userId, guestbookId, requestDto);
+        guestbookService.updatePartial(userId, kakaoPlaceId, requestDto);
         return ResponseEntity.ok(ResponseUtil.createSuccessResponse());
     }
 
     @AssignUserId
-    @DeleteMapping("/{guestbookId}")
+    @DeleteMapping("/{kakaoPlaceId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> delete(
             Long userId,
-            @PathVariable Long guestbookId) {
-        guestbookService.delete(userId, guestbookId);
+            @PathVariable String kakaoPlaceId) {
+        guestbookService.delete(userId, kakaoPlaceId);
         return ResponseEntity.ok(ResponseUtil.createSuccessResponse());
     }
 
