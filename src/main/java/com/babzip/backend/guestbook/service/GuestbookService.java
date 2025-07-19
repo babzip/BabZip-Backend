@@ -34,19 +34,19 @@ public class GuestbookService {
     }
 
     @Transactional
-    public void updatePartial(Long userId, Long guestbookId, GuestbookRequestDto dto) {
-        Guestbook guestbook = getOwnedGuestbook(userId, guestbookId);
+    public void updatePartial(Long userId, String kakaoPlaceId, GuestbookRequestDto dto) {
+        Guestbook guestbook = getGuestbookByPlaceAndUser(userId, kakaoPlaceId);
         guestbook.updatePartial(dto.getKakaoPlaceId(), dto.getContent(), dto.getRating());
     }
 
     @Transactional
-    public void delete(Long userId, Long guestbookId) {
-        Guestbook guestbook = getOwnedGuestbook(userId, guestbookId);
+    public void delete(Long userId, String kakaoPlaceId) {
+        Guestbook guestbook = getGuestbookByPlaceAndUser(userId, kakaoPlaceId);
         guestbookRepository.delete(guestbook);
     }
 
-    private Guestbook getOwnedGuestbook(Long userId, Long guestbookId) {
-        return guestbookRepository.findByIdAndUserId(guestbookId, userId)
+    private Guestbook getGuestbookByPlaceAndUser(Long userId, String kakaoPlaceId) {
+        return guestbookRepository.findByKakaoPlaceIdAndUserId(kakaoPlaceId, userId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 방명록을 찾을 수 없습니다."));
     }
 

@@ -38,20 +38,20 @@ public class GuestbookController {
         return ResponseEntity.ok(ResponseUtil.createSuccessResponse(response));
     }
 
-    @PatchMapping("/{guestbookId}")
+    @PatchMapping("/{kakaoPlaceId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> updatePartial(@AssignUserId Long userId,
-                                                            @PathVariable Long guestbookId,
+                                                            @PathVariable String kakaoPlaceId,
                                                             @RequestBody GuestbookRequestDto requestDto) {
-        guestbookService.updatePartial(userId, guestbookId, requestDto);
+        guestbookService.updatePartial(userId, kakaoPlaceId, requestDto);
         return ResponseEntity.ok(ResponseUtil.createSuccessResponse());
     }
 
     @DeleteMapping("/{guestbookId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> delete(@AssignUserId Long userId,
-                                                     @PathVariable Long guestbookId) {
-        guestbookService.delete(userId, guestbookId);
+                                                     @PathVariable String kakaoPlaceId) {
+        guestbookService.delete(userId, kakaoPlaceId);
         return ResponseEntity.ok(ResponseUtil.createSuccessResponse());
     }
 }
