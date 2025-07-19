@@ -11,6 +11,7 @@ import com.babzip.backend.user.domain.User;
 import com.babzip.backend.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class GuestbookService {
 
     private final GuestbookRepository guestbookRepository;
@@ -47,7 +49,9 @@ public class GuestbookService {
     public void updatePartial(Long userId, GuestbookRequestDto dto) {
         Guestbook guestbook = guestbookRepository.findByKakaoPlaceIdAndUserId(dto.kakaoPlaceId(), userId)
                 .orElseThrow(() -> new BusinessException(ExceptionType.GUEST_BOOK_NOT_FOUND));
+        log.info("정상 작동");
         guestbook.updatePartial(dto.restaurantName(), dto.kakaoPlaceId(), dto.content(), dto.rating());
+        log.info("정상 작동");
     }
 
     @Transactional
