@@ -9,6 +9,7 @@ import com.babzip.backend.guestbook.dto.response.GuestbookResponseDto;
 import com.babzip.backend.guestbook.dto.response.GuestbookSearchResponse;
 import com.babzip.backend.guestbook.service.GuestbookService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/guestbook")
+@Slf4j
 public class GuestbookController implements GuestBookApi {
 
     private final GuestbookService guestbookService;
@@ -53,6 +55,7 @@ public class GuestbookController implements GuestBookApi {
             @RequestBody GuestbookRequestDto requestDto
     ) {
         guestbookService.updatePartial(userId, requestDto);
+        log.info("정상 작동");
         return ResponseEntity.ok(ResponseUtil.createSuccessResponse());
     }
 
