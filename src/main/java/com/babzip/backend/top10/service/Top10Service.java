@@ -34,7 +34,7 @@ public class Top10Service {
 
         for (Top10Request r : request) {
 
-            if (r == null || r.rankValue() == null || r.restaurantName() == null || r.address() == null) {
+            if (r.rankValue() == null) {
                 continue;
             }
 
