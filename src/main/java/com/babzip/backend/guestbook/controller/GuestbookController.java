@@ -46,14 +46,13 @@ public class GuestbookController implements GuestBookApi {
     }
 
     @AssignUserId
-    @PatchMapping("/{kakaoPlaceId}")
+    @PatchMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ResponseBody<Void>> updatePartial(
             Long userId,
-            @PathVariable String kakaoPlaceId,
             @RequestBody GuestbookRequestDto requestDto
     ) {
-        guestbookService.updatePartial(userId, kakaoPlaceId, requestDto);
+        guestbookService.updatePartial(userId, requestDto);
         return ResponseEntity.ok(ResponseUtil.createSuccessResponse());
     }
 

@@ -44,8 +44,8 @@ public class GuestbookService {
     }
 
     @Transactional
-    public void updatePartial(Long userId, String kakaoPlaceId, GuestbookRequestDto dto) {
-        Guestbook guestbook = guestbookRepository.findByKakaoPlaceIdAndUserId(kakaoPlaceId, userId)
+    public void updatePartial(Long userId, GuestbookRequestDto dto) {
+        Guestbook guestbook = guestbookRepository.findByKakaoPlaceIdAndUserId(dto.kakaoPlaceId(), userId)
                 .orElseThrow(() -> new BusinessException(ExceptionType.GUEST_BOOK_NOT_FOUND));
         guestbook.updatePartial(dto.restaurantName(), dto.kakaoPlaceId(), dto.content(), dto.rating());
     }
