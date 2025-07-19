@@ -2,6 +2,7 @@ package com.babzip.backend.global.exception;
 
 import com.babzip.backend.global.response.ResponseBody;
 import com.babzip.backend.global.response.ResponseUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ResponseBody<Void>> businessException(BusinessException e) {
+    public ResponseEntity<ResponseBody<Void>> businessException(BusinessException e, HttpServletRequest request) {
         ExceptionType exceptionType = e.getExceptionType();
+        log.error("🔥 [{} {}] 요청 중 예외 발생: {}", request.getMethod(), request.getRequestURI(), e.getMessage(), e);
+
         return ResponseEntity.status(exceptionType.getStatus())
                 .body(ResponseUtil.createFailureResponse(exceptionType));
 
