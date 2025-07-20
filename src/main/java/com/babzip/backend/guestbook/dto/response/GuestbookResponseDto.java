@@ -7,7 +7,7 @@ public record GuestbookResponseDto(
         String restaurantName,
         String kakaoPlaceId,
         String content,
-        Long rating,
+        Double rating,
         String address,
         LocalDateTime createdAt
 ) {
