@@ -8,7 +8,7 @@ public record GuestbookSearchResponse (
         String restaurantName,
         String address,
         String content,
-        Long rating,
+        Double rating,
         LocalDateTime createdAt
 ){
     public static GuestbookSearchResponse toDto(Guestbook guestbook) {
