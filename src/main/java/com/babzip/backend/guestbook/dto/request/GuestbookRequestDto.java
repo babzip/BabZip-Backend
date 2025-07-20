@@ -8,7 +8,7 @@ public record GuestbookRequestDto (
         String address,
         String kakaoPlaceId, // 카카오에서 받은 음식점 ID
         String content,
-        Long rating
+        Double rating
 ){
 }
 
