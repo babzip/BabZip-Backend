@@ -3,8 +3,12 @@ package com.babzip.backend.global.oauth.handler;
 import com.babzip.backend.global.jwt.JwtHandler;
 import com.babzip.backend.global.jwt.JwtUserClaim;
 import com.babzip.backend.global.oauth.service.OAuth2UserPrincipal;
+import com.babzip.backend.global.oauth.util.RedirectUrlValidator;
+import com.babzip.backend.global.oauth.util.StateUtil;
 import com.babzip.backend.token.entity.Token;
 import com.babzip.backend.user.domain.UserRole;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.Base64;
 
 @Component
 @RequiredArgsConstructor
@@ -28,6 +33,13 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
+
+        String encodedState = request.getParameter("state");
+        String redirectUri = StateUtil.decode(encodedState);
+
+        // 2) 화이트리스트 검증
+        RedirectUrlValidator.validate(redirectUri);
+
         OAuth2UserPrincipal principal = (OAuth2UserPrincipal) authentication.getPrincipal();
         Long userId = principal.getUser().getId();
         UserRole role = principal.getUser().getRole();
@@ -35,13 +47,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         JwtUserClaim jwtUserClaim = new JwtUserClaim(userId,role);
         Token token = jwtHandler.createTokens(jwtUserClaim);
 
-        String targetUrl = "http://localhost:5173/auth/success";
-
-
-
-
         // 토큰 붙여서 리다이렉트
-        String redirectUrl = UriComponentsBuilder.fromUriString(targetUrl)
+        String redirectUrl = UriComponentsBuilder.fromUriString(redirectUri)
                 .queryParam("accessToken", token.getAccessToken())
                 .queryParam("refreshToken", token.getRefreshToken())
                 .build().toUriString();
