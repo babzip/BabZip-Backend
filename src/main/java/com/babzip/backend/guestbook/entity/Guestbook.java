@@ -32,6 +32,7 @@ public class Guestbook extends BaseEntity {
         this.kakaoPlaceId = kakaoPlaceId;
         this.content = content;
         this.rating = rating;
+
     }
 
     public void updatePartial(String restaurantName,String kakaoPlaceId, String content, Long rating) {
