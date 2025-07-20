@@ -3,6 +3,7 @@ package com.babzip.backend.global.config.security;
 import com.babzip.backend.global.jwt.JwtAuthenticationFilter;
 import com.babzip.backend.global.jwt.TokenProvider;
 import com.babzip.backend.global.oauth.handler.OAuth2AuthenticationSuccessHandler;
+import com.babzip.backend.global.oauth.resolver.CustomAuthorizationRequestResolver;
 import com.babzip.backend.global.oauth.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -29,6 +31,7 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final AuthenticationManager authenticationManager;
+    private final CustomAuthorizationRequestResolver customAuthorizationRequestResolver;
 
     @Bean
     public SecurityFilterChain filterChainPermitAll(HttpSecurity http) throws Exception {
@@ -45,11 +48,15 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(CorsConfig.corsConfigurationSource()))
-                .oauth2Login(oauth2 ->
-                        oauth2.userInfoEndpoint(c -> c.userService(customOAuth2UserService))
-                                .successHandler(oAuth2AuthenticationSuccessHandler))
-                .addFilterAfter(new JwtAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
-                ;
+                .oauth2Login(oauth2 -> oauth2
+                        .authorizationEndpoint(auth ->
+                                auth.authorizationRequestResolver(customAuthorizationRequestResolver))
+                        .userInfoEndpoint(ui ->
+                                ui.userService(customOAuth2UserService))
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
+                )
+                .addFilterAfter(new JwtAuthenticationFilter(authenticationManager),
+                        UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
