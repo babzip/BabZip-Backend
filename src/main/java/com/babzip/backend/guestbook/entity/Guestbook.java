@@ -18,23 +18,24 @@ public class Guestbook extends BaseEntity {
     private String address;
     private String kakaoPlaceId;
     private String content;
-    private Long rating;
+    private Double rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public Guestbook(String restaurantName, String address,User user, String kakaoPlaceId, String content, Long rating) {
+    public Guestbook(String restaurantName, String address,User user, String kakaoPlaceId, String content, Double rating) {
         this.restaurantName = restaurantName;
         this.address = address;
         this.user = user;
         this.kakaoPlaceId = kakaoPlaceId;
         this.content = content;
         this.rating = rating;
+
     }
 
-    public void updatePartial(String restaurantName,String kakaoPlaceId, String content, Long rating) {
+    public void updatePartial(String restaurantName,String kakaoPlaceId, String content, Double rating) {
         if (restaurantName != null) this.restaurantName = restaurantName;
         if (kakaoPlaceId != null) this.kakaoPlaceId = kakaoPlaceId;
         if (content != null) this.content = content;
